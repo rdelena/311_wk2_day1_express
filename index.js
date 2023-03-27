@@ -43,10 +43,12 @@ app.delete("/users/:id", (req, res) => {
   const deleteUser = users.findIndex(
     (user) => user._id === parseInt(req.params.id)
   );
-  if (deleteUser >= 0) {
-    users.splice(deleteUser, 1);
+  if (!deleteUser) {
+    res.status(404).send("User does not exist");
   }
-  res.json(users);
+  deleteUser.isActive = false;
+  users.splice(deleteUser, 1);
+  res.send("User has been deleted");
 });
 /* END - create routes here */
 
